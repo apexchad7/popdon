@@ -23,7 +23,7 @@ function swapImage() {
       mainImage.classList.remove("missed-image");
       mainImage.classList.add("full-screen-image");
       isMissedImageActive = false;
-    }, 300);
+    }, 500);
   } else {
     // alternate between active1.png and active2.png
     if (clickCount % 2 === 0) {
