@@ -1,10 +1,16 @@
 let clickCount = 0;
 let isMissedImageActive = false;
+let audioContext;
+let popSoundBuffer;
 
-document.addEventListener("DOMContentLoaded", () => {
-  // preload pop sound
-  const popSound = document.getElementById("popSound");
-  popSound.load();
+document.addEventListener("DOMContentLoaded", async () => {
+  // create a new audio context
+  audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+  // load the pop sound
+  const response = await fetch("sounds/pop.mp3");
+  const arrayBuffer = await response.arrayBuffer();
+  popSoundBuffer = await audioContext.decodeAudioData(arrayBuffer);
 
   // preload images
   const images = ["images/active1.png", "images/active2.png", "images/missed.png", "images/rest.png"];
@@ -15,19 +21,26 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+function playPopSound() {
+  if (!popSoundBuffer) {
+    return;
+  }
+
+  const source = audioContext.createBufferSource();
+  source.buffer = popSoundBuffer;
+  source.connect(audioContext.destination);
+  source.start(0);
+}
+
 function swapImage() {
   if (isMissedImageActive) {
     return;
   }
 
   const mainImage = document.getElementById("mainImage");
-  const popSound = document.getElementById("popSound");
 
-  // play the pop sound only if it's fully loaded
-  if (popSound.readyState >= 3) {
-    popSound.currentTime = 0; // restart the sound if already playing
-    popSound.play();
-  }
+  // play the pop sound
+  playPopSound();
 
   // show the missed.png image after 10 clicks
   if (clickCount > 0 && clickCount % 10 === 0) {
