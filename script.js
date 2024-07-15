@@ -2,6 +2,7 @@ let clickCount = 0;
 let isMissedImageActive = false;
 let audioContext;
 let popSoundBuffer;
+let randomClickInterval = Math.floor(Math.random() * (21 - 12 + 1)) + 12;
 
 document.addEventListener("DOMContentLoaded", async () => {
   // create a new audio context
@@ -13,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   popSoundBuffer = await audioContext.decodeAudioData(arrayBuffer);
 
   // preload images
-  const images = ["images/active1.webp", "images/active2.webp", "images/missed.png", "images/rest.webp"];
+  const images = ["images/active1.webp", "images/active2.webp", "images/missed.webp", "images/rest.webp"];
 
   images.forEach((src) => {
     const img = new Image();
@@ -56,31 +57,35 @@ function swapImage() {
   // play the pop sound
   playPopSound();
 
-  // show the missed.png image after 10 clicks
-  /*if (clickCount > 0 && clickCount % 10 === 0) {
+  // show the missed.webp image after random clicks every now and then (between 12 and 21 clicks)
+  if (clickCount > 0 && clickCount % randomClickInterval === 0) {
     isMissedImageActive = true;
-    mainImage.src = "images/missed.png";
-    if (window.innerWidth < 1377) {
-      mainImage.classList.remove("full-screen-image");
-      mainImage.classList.add("missed-image");
-    }
+    mainImage.src = "images/missed.webp";
+    //if (window.innerWidth < 1377) {
+    mainImage.classList.remove("full-screen-image");
+    mainImage.classList.add("missed-image");
+    //}
     setTimeout(() => {
       mainImage.src = "images/rest.webp";
-      if (window.innerWidth < 1377) {
-        mainImage.classList.remove("missed-image");
-        mainImage.classList.add("full-screen-image");
-      }
+      //if (window.innerWidth < 1377) {
+      mainImage.classList.remove("missed-image");
+      mainImage.classList.add("full-screen-image");
+      //}
       isMissedImageActive = false;
     }, 500);
-  } else {*/
-  // randomly choose between active1.webp and active2.webp
-  const images = ["images/active1.webp", "images/active2.webp"];
-  mainImage.src = images[Math.floor(Math.random() * images.length)];
 
-  setTimeout(() => {
-    mainImage.src = "images/rest.webp";
-  }, 100);
-  //}
+    // rest clickCount and generate a new random interval for the next check
+    clickCount = 0;
+    randomClickInterval = Math.floor(Math.random() * (21 - 12 + 1)) + 12;
+  } else {
+    // randomly choose between active1.webp and active2.webp
+    const images = ["images/active1.webp", "images/active2.webp"];
+    mainImage.src = images[Math.floor(Math.random() * images.length)];
+
+    setTimeout(() => {
+      mainImage.src = "images/rest.webp";
+    }, 100);
+  }
 
   clickCount++;
 }
