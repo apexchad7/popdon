@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0"
     />
-    <title>Pop Don</title>
+    <title>Helmet</title>
 
     <!-- styles -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -28,31 +28,37 @@
         <img
           src="./images/logo.png"
           alt="logo"
-          class="w-8 h-8 md:w-10 md:h-10"
+          class="w-8 h-8 md:w-10 md:h-10 rounded-full"
         />
       </a>
       <div class="flex-grow">
         <ul class="flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-8 justify-center text-xs sm:text-sm md:text-md lg:text-lg">
           <li>
             <a
-              href="https://pump.fun/AZbRfvPLigASNC2Np97Qouhvuma3SGNvNdwh2mGMpump"
+              href="https://pump.fun/"
               class="hover:text-gray-500 font-bold"
               target="_blank"
               rel="noopener noreferrer"
-              >AZbRfvPLigASNC2Np97Qouhvuma3SGNvNdwh2mGMpump</a
+              >Coming Soon</a
             >
           </li>
         </ul>
       </div>
     </nav>
 
-    <div class="flex justify-center items-center h-full">
+    <div class="relative h-full flex justify-center items-center">
       <img
         id="mainImage"
-        src="images/rest.png"
+        src="images/rest.webp"
         alt="Rest Image"
         class="full-screen-image transition-all duration-100"
       />
+      <p
+        id="interactionMessage"
+        class="absolute top-0 mt-4 text-center w-full text-white font-semibold text-base md:text-lg lg:text-xl [text-shadow:_0_2px_0_rgb(0_0_0_/_40%)]"
+      >
+        Click anywhere or press the spacebar!
+      </p>
     </div>
     <audio
       id="popSound"

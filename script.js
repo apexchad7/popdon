@@ -13,12 +13,26 @@ document.addEventListener("DOMContentLoaded", async () => {
   popSoundBuffer = await audioContext.decodeAudioData(arrayBuffer);
 
   // preload images
-  const images = ["images/active1.png", "images/active2.png", "images/missed.png", "images/rest.png"];
+  const images = ["images/active1.webp", "images/active2.webp", "images/missed.png", "images/rest.webp"];
 
   images.forEach((src) => {
     const img = new Image();
     img.src = src;
   });
+
+  // add event listener for spacebar press
+  document.addEventListener("keydown", (event) => {
+    if (event.code === "Space") {
+      swapImage();
+    }
+  });
+
+  // dynamically show click or tap message based on the device
+  var message = "Click anywhere or press the spacebar!"; // default message
+  if ("ontouchstart" in window || navigator.maxTouchPoints) {
+    message = "Tap anywhere"; // touchscreen message
+  }
+  document.getElementById("interactionMessage").textContent = message;
 });
 
 function playPopSound() {
@@ -43,29 +57,33 @@ function swapImage() {
   playPopSound();
 
   // show the missed.png image after 10 clicks
-  if (clickCount > 0 && clickCount % 10 === 0) {
+  /*if (clickCount > 0 && clickCount % 10 === 0) {
     isMissedImageActive = true;
     mainImage.src = "images/missed.png";
-    mainImage.classList.remove("full-screen-image");
-    mainImage.classList.add("missed-image");
+    if (window.innerWidth < 1377) {
+      mainImage.classList.remove("full-screen-image");
+      mainImage.classList.add("missed-image");
+    }
     setTimeout(() => {
-      mainImage.src = "images/rest.png";
-      mainImage.classList.remove("missed-image");
-      mainImage.classList.add("full-screen-image");
+      mainImage.src = "images/rest.webp";
+      if (window.innerWidth < 1377) {
+        mainImage.classList.remove("missed-image");
+        mainImage.classList.add("full-screen-image");
+      }
       isMissedImageActive = false;
     }, 500);
-  } else {
-    // alternate between active1.png and active2.png
-    if (clickCount % 2 === 0) {
-      mainImage.src = "images/active1.png";
-    } else {
-      mainImage.src = "images/active2.png";
-    }
+  } else {*/
+  // randomly choose between active1.webp and active2.webp
+  const images = ["images/active1.webp", "images/active2.webp"];
+  mainImage.src = images[Math.floor(Math.random() * images.length)];
 
-    setTimeout(() => {
-      mainImage.src = "images/rest.png";
-    }, 100);
-  }
+  setTimeout(() => {
+    mainImage.src = "images/rest.webp";
+  }, 100);
+  //}
 
   clickCount++;
 }
+
+// add event listener for click
+document.getElementById("mainImage").addEventListener("click", swapImage);
