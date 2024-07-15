@@ -3,6 +3,7 @@ let isMissedImageActive = false;
 let audioContext;
 let popSoundBuffer;
 let randomClickInterval = Math.floor(Math.random() * (21 - 12 + 1)) + 12;
+let isSwappingImage = false; // state to check if swapping image is in progress
 
 document.addEventListener("DOMContentLoaded", async () => {
   // create a new audio context
@@ -36,6 +37,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("interactionMessage").textContent = message;
 });
 
+function applyNoOutlineNoSelect(element) {
+  element.classList.add("no-outline", "noSelect");
+}
+
 function playPopSound() {
   if (!popSoundBuffer) {
     return;
@@ -48,10 +53,11 @@ function playPopSound() {
 }
 
 function swapImage() {
-  if (isMissedImageActive) {
+  if (isMissedImageActive || isSwappingImage) {
     return;
   }
 
+  isSwappingImage = true; // set state to indicate image swap is in progress
   const mainImage = document.getElementById("mainImage");
 
   // play the pop sound
@@ -61,29 +67,32 @@ function swapImage() {
   if (clickCount > 0 && clickCount % randomClickInterval === 0) {
     isMissedImageActive = true;
     mainImage.src = "images/missed.webp";
-    //if (window.innerWidth < 1377) {
     mainImage.classList.remove("full-screen-image");
     mainImage.classList.add("missed-image");
-    //}
+    applyNoOutlineNoSelect(mainImage); // apply classes
+
     setTimeout(() => {
       mainImage.src = "images/rest.webp";
-      //if (window.innerWidth < 1377) {
       mainImage.classList.remove("missed-image");
       mainImage.classList.add("full-screen-image");
-      //}
+      applyNoOutlineNoSelect(mainImage); // apply classes
       isMissedImageActive = false;
+      isSwappingImage = false; // reset state
     }, 500);
 
-    // rest clickCount and generate a new random interval for the next check
+    // reset clickCount and generate a new random interval for the next check
     clickCount = 0;
     randomClickInterval = Math.floor(Math.random() * (21 - 12 + 1)) + 12;
   } else {
     // randomly choose between active1.webp and active2.webp
     const images = ["images/active1.webp", "images/active2.webp"];
     mainImage.src = images[Math.floor(Math.random() * images.length)];
+    applyNoOutlineNoSelect(mainImage); // apply classes
 
     setTimeout(() => {
       mainImage.src = "images/rest.webp";
+      applyNoOutlineNoSelect(mainImage); // apply classes
+      isSwappingImage = false; // reset state
     }, 100);
   }
 
