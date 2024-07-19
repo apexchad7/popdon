@@ -22,10 +22,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     img.src = src;
   });
 
+  // add event listener to the popup button
+  document.getElementById("popupButton").addEventListener("click", () => {
+    document.getElementById("popup").style.display = "none";
+  });
+
+  // add event listener to the entire popup to close when clicked anywhere
+  document.getElementById("popup").addEventListener("click", () => {
+    document.getElementById("popup").style.display = "none";
+  });
+
+  // show the popup on page load
+  document.getElementById("popup").style.display = "flex";
+
   // add event listener for spacebar press
   document.addEventListener("keydown", (event) => {
     if (event.code === "Space") {
       swapImage();
+      document.getElementById("popup").style.display = "none";
     }
   });
 
