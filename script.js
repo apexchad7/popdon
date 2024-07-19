@@ -22,11 +22,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     img.src = src;
   });
 
-  // add event listener to the popup button
-  document.getElementById("popupButton").addEventListener("click", () => {
-    document.getElementById("popup").style.display = "none";
-  });
-
   // add event listener to the entire popup to close when clicked anywhere
   document.getElementById("popup").addEventListener("click", () => {
     document.getElementById("popup").style.display = "none";
@@ -34,6 +29,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // show the popup on page load
   document.getElementById("popup").style.display = "flex";
+
+  // automatically close the popup after 3 seconds
+  setTimeout(() => {
+    document.getElementById("popup").style.display = "none";
+  }, 2500);
 
   // add event listener for spacebar press
   document.addEventListener("keydown", (event) => {
